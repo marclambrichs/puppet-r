@@ -6,17 +6,22 @@ define r::package (
   $dependencies = false,
   $environment  = undef,
   $timeout      = 300,
+  $verbose      = false,
 ) {
 
     case $::osfamily {
     'Debian', 'RedHat': {
 
       if $r_path == '' {
-        $binary = '/usr/bin/R'
+        $runtime = '/usr/bin/Rscript'
       }
       else
       {
-        $binary = $r_path
+        $runtime = $r_path
+      }
+
+      if $verbose {
+        $binary = sprintf("$runtime %<x>s", { 'x' => '--verbose'})
       }
 
       $command = $dependencies ? {
