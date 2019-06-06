@@ -1,6 +1,7 @@
 # init.pp
 
 class r (
+  $devel          = false,
   $package_ensure = installed,
 ) {
 
@@ -10,6 +11,10 @@ class r (
     }
     'RedHat': {
       package { 'R-core': ensure => $package_ensure }
+
+      if $devel {
+        package { 'R-core-devel': ensure => $package_ensure }
+      }
     }
     'windows': {
       # Choco package does not install static version and does not add R to PATH
